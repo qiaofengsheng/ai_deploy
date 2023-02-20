@@ -86,9 +86,10 @@ int TensorrtInference::onnxToEngine(const char* onnx_path,string save_engine_pat
             profile->setDimensions(name, OptProfileSelector::kMIN, Dims4(min_batch, dim.d[1], dim.d[2], dim.d[3])); // 最小输入
             profile->setDimensions(name, OptProfileSelector::kOPT, Dims4(medium_batch, dim.d[1], dim.d[2], dim.d[3])); // 建议输入
             profile->setDimensions(name, OptProfileSelector::kMAX, Dims4(max_batch, dim.d[1], dim.d[2], dim.d[3])); // 最大输入
-            config->addOptimizationProfile(profile);
         }
     }
+    config->addOptimizationProfile(profile);
+
     
     // 构建 engine
     config->setMaxWorkspaceSize(1 << 20); // 设置工作空间大小

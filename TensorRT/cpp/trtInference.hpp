@@ -41,7 +41,7 @@ class TensorrtInference{
 
 
     private:
-        // float* blobFromImage(cv::Mat& img)
+        float* blobFromImage(cv::Mat& img);
         // void dataProcess(cv::Mat img,vector<flaot*> input);
         // int doInference(vector<float*> input,vector<float*> &output);
         // void postProcess(vector<float*> output,Json::Value &result);
