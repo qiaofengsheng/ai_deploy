@@ -123,7 +123,7 @@ int TensorrtInference::doInference(vector<float*> input,vector<float*> &output){
     // 指向要传递给引擎的输入和输出设备缓冲区的指针。
     // 引擎需要的缓冲区数量恰好是 IEngine::getNbBindings()个。
     // cout<<engine->getNbBindings()<<endl;
-    // assert(engine.getNbBindings() == 4);
+    assert(engine.getNbBindings() == (input_names.size()+output_names.size()));
 
     // 创建流
     CHECK(cudaStreamCreate(&stream));
