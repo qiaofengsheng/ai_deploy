@@ -71,7 +71,7 @@ class TRTWrapper(torch.nn.Module):
                                       torch.cuda.current_stream().cuda_stream) # 运行 CUDA 异步操作的方法。它提供两个参数：第一个是异步操作的执行参数的集合，第二个是一个用于执行 CUDA 操作的流。
         return outputs
 
-model = TRTWrapper('/data/qfs/project/study/trt_demo/python/model.engine', ['output1','output2'])
+model = TRTWrapper('/data/qfs/project/study/qfs_trt/model.trt', ['output'])
 import time
 s1 = time.time()
 
@@ -90,12 +90,14 @@ s1 = time.time()
 # output = model(dict(input = torch.ones(64, 3, 224, 224).cuda()))
 # e4 = time.time()
 import cv2
-img = cv2.imread("/data/qfs/project/study/cpp_http_demo/img/3.jpg")
-img = cv2.resize(img,(224,224))
+import numpy as np
+# img = cv2.imread("/data/qfs/project/study/cpp_http_demo/img/3.jpg")
+# img = cv2.resize(img,(224,224))
+img = np.ones((1,3,600,600))
 print(img)
-img = torch.Tensor(img).permute(2,0,1).unsqueeze(0)
+# img = torch.Tensor(img).permute(2,0,1).unsqueeze(0)
 print(img)
-output = model(dict(input1 = img.cuda(),input2 = img.cuda()))
+img = torch.Tensor(img)
+output = model(dict(input = img.cuda()))
 e5 = time.time()
-print(output["output1"])
-print(output["output2"])
+print(output["output"])
