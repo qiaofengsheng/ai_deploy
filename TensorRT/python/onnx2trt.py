@@ -51,4 +51,4 @@ def onnx2trt(onnx_model_path,save_engine_path,min_batch,medium_batch,max_batch):
         print("generating file done!")
 
 
-onnx2trt("/data/qfs/project/study/trt_demo/python/model.onnx","/data/qfs/project/study/trt_demo/python/",1,2,4)
+onnx2trt("/data/qfs/project/study/pytorch-UNet/model.onnx","/data/qfs/project/study/pytorch-UNet/",1,2,4)
