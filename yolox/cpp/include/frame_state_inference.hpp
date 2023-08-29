@@ -31,6 +31,7 @@ public:
 
 private:
     void *beforeProcess(std::vector<cv::Mat> &img);
+    void afterProcess(void *data);
     void postProcess(std::vector<float *> outputs, int batch_size, std::vector<Json::Value> &res);
 
     void generate_grids_and_stride(std::vector<int> &strides, std::vector<GridAndStride> &grid_strides);
@@ -47,7 +48,7 @@ private:
     int image_height_=800;
     int image_width_ = 800;
     int num_classes = 19;
-    float conf_thr_ = 0.001;
+    float conf_thr_ = 0.01;
     int padding_value_=255;
     float nms_thr_ = 0.5;
     float min_thr_ = 0.6;

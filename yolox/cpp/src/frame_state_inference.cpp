@@ -10,6 +10,12 @@ FrameStateInference::~FrameStateInference()
     delete tensorrt_;
 }
 
+void FrameStateInference::afterProcess(void *data)
+{
+    float *inputData = static_cast<float *>(data);
+    delete[] inputData; // 释放分配的内存块
+}
+
 void *FrameStateInference::beforeProcess(std::vector<cv::Mat> &img)
 {
     float *inputData = new float[img.size() * 3 * this->image_height_ * this->image_width_];
@@ -48,6 +54,7 @@ void *FrameStateInference::beforeProcess(std::vector<cv::Mat> &img)
         }
         memcpy(inputData + i * 3 * this->image_height_ * this->image_width_, dataPtr, 3 * this->image_height_ * this->image_width_ * sizeof(float));
     }
+    
     return (void *)inputData;
 }
 
@@ -331,6 +338,7 @@ int FrameStateInference::detection(cv::Mat &inputImage, std::string &outputs)
     float *tmp_output = new float[maxBatchSize_ * this->anchors_*(this->num_classes+6)];
     std::vector<float *> output_ = {tmp_output};
     int status = tensorrt_->doBatchInference({(float *)inputData}, input_imgs.size(), output_);
+    afterProcess(inputData);
     std::vector<Instance> proposals;
     std::vector<int> strides = {8, 16, 32};
     std::vector<GridAndStride> grid_strides;
@@ -392,6 +400,7 @@ int FrameStateInference::detection(cv::Mat &inputImage, std::string &outputs)
     
     instances = minNMS(instances, 0.6);
     postprocess(instances,outputs);
+    delete[] tmp_output;
     return status;
 }
 
