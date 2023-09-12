@@ -445,7 +445,7 @@ void FrameStateInference::generateDetInstances(std::vector<GridAndStride> grid_s
         const int stride = grid_strides[anchor_idx].stride;
 
         // int basic_pos = anchor_idx * (this->num_classes_ + 5);
-        int basic_pos = anchor_idx * (19 + 6);
+        int basic_pos = anchor_idx * (num_classes + 6);
 
         float x_center = (feat_blob[basic_pos + 0] + grid0) * stride;
         float y_center = (feat_blob[basic_pos + 1] + grid1) * stride;
