@@ -67,8 +67,8 @@ private:
     std::vector<int> inputVolumSize;
     std::vector<int> outputVolumSize;
     int minBatch = 1;
-    int mediumBatch = 2;
-    int maxBatch = 4;
+    int mediumBatch = 1;
+    int maxBatch = 1;
     Logger logger_;
     ICudaEngine *engine_;
     IExecutionContext *context_;

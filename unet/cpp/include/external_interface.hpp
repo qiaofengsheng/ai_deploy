@@ -4,6 +4,8 @@
 #include <vector>
 #include <opencv2/opencv.hpp>
 #include "json.h"
+
+
 class ExternalInterface
 {
 
@@ -13,7 +15,7 @@ public:
 
     static ExternalInterface *createModel(const std::string &modelPath, std::string configPath);
 
-    virtual int detection(std::vector<cv::Mat> &input_imgs, std::vector<Json::Value> &outputs) = 0;
+    virtual int detection(cv::Mat &inputImage,cv::Mat &predScore,cv::Mat &predMat) = 0;
 };
 
 #endif

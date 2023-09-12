@@ -133,7 +133,6 @@ int TensorRT::loadModel(string modelPath, std::vector<string> inputNames,
     //     CHECK(cudaMalloc(&buffers_[outputIndex], 2 * elementSize(data_type2) * maxBatch));
     // }
     int nums = engine_->getNbBindings();
-    std::cout << "nums: " << nums << std::endl;
     vecBuffer_.resize(nums);
     inputVolumSize = getSize(inputSizes);
     outputVolumSize = getSize(outputSizes);
@@ -156,77 +155,13 @@ int TensorRT::doBatchInference(std::vector<float *> input, const int batch_size,
     {
         CHECK(cudaMemcpyAsync(vecBuffer_[i], input[i], inputVolumSize[i] * sizeof(float) * batch_size, cudaMemcpyHostToDevice, stream_));
     }
-    std::cout << "-------------------------" << std::endl;
     context_->enqueueV2(vecBuffer_.data(), stream_, nullptr);
     cudaStreamSynchronize(stream_);
     CHECK(cudaMemcpyAsync(outputs[0], vecBuffer_[1], maxBatch * outputVolumSize[0] * sizeof(float), cudaMemcpyDeviceToHost, stream_));
     cudaStreamSynchronize(stream_);
-    // Release stream and buffers
-    // cudaStreamDestroy(stream_);
-    // float *c = (float *)outputPtrs_[0];
-    // outputs = outputPtrs_;
-    for (int i = 0; i < batch_size * 2; ++i)
-    {
-        std::cout << outputs[0][i] << "  ";
-    }
-
-    // std::cout << 123 << std::endl;
     return 0;
 }
 
-// int TensorRT::doInference(float *input, const int batch_size, std::vector<void *> &outputs)
-// {
-
-//     // collect output size info
-//     for (int i = 0; i < inputNames.size(); i++)
-//     {
-//         int inputIndex = engine_->getBindingIndex(inputNames[i].c_str());
-//         Dims inputDims = context_->getBindingDimensions(inputIndex);
-//         inputIndexes_.push_back(inputIndex);
-//         inputDims_.push_back(inputDims);
-//         inputSizes_.push_back(volume(inputDims));
-//     }
-
-//     for (size_t i = 0; i < outputNames.size(); i++)
-//     {
-//         int outputIndex = engine_->getBindingIndex(outputNames[i].c_str());
-//         Dims outputDims = context_->getBindingDimensions(outputIndex);
-//         outputIndexes_.push_back(outputIndex);
-//         outputDims_.push_back(outputDims);
-//         outputSizes_.push_back(volume(outputDims));
-//         outputPtrs_.push_back(malloc(volume(outputDims) * sizeof(float)));
-//     }
-//     // void *buffers[2];
-//     for (int i = 0; i < inputNames.size(); ++i)
-//     {
-//         CHECK(cudaMalloc(&buffers_[inputIndexes_[i]], inputSizes_[i] * sizeof(float)));
-//         CHECK(cudaMemcpyAsync(buffers_[inputIndexes_[i]], input, inputSizes_[i] * sizeof(float), cudaMemcpyHostToDevice, stream_));
-//     }
-
-//     for (int i = 0; i < outputNames.size(); ++i)
-//     {
-//         CHECK(cudaMalloc(&buffers_[outputIndexes_[i]], outputSizes_[i] * sizeof(float)));
-//     }
-//     // DMA input batch data to device, infer on the batch asynchronously, and DMA output back to host
-//     context_->enqueueV2(buffers_, stream_, nullptr);
-//     for (int i = 0; i < outputNames.size(); ++i)
-//     {
-//         CHECK(cudaMemcpyAsync(outputPtrs_[i], buffers_[outputIndexes_[i]], outputSizes_[i] * sizeof(float), cudaMemcpyDeviceToHost, stream_));
-//     }
-
-//     cudaStreamSynchronize(stream_);
-
-//     // Release stream and buffers
-//     cudaStreamDestroy(stream_);
-//     CHECK(cudaFree(buffers_[0]));
-//     CHECK(cudaFree(buffers_[1]));
-//     float *c = (float *)outputPtrs_[0];
-//     outputs = outputPtrs_;
-//     std::cout << c[0] << " " << c[1] << std::endl;
-
-//     std::cout << 123 << std::endl;
-//     return 0;
-// }
 
 int TensorRT::loadOnnxModel(string modelPath)
 {
