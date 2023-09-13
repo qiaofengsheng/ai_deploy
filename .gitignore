@@ -2,3 +2,4 @@
 **/*.trt
 **/*.so
 **/build
+.vscode/
