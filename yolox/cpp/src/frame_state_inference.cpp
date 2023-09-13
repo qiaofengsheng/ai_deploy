@@ -22,7 +22,7 @@ void *FrameStateInference::beforeProcess(std::vector<cv::Mat> &img)
 
     for (int i = 0; i < img.size(); ++i)
     {
-        cv::Mat img_data_(this->image_width_, this->image_height_, CV_8UC3,cv::Scalar(this->padding_value_, this->padding_value_, this->padding_value_));
+        cv::Mat img_data_(this->image_height_,this->image_width_, CV_8UC3,cv::Scalar(this->padding_value_, this->padding_value_, this->padding_value_));
         float scale = std::max((img[i].cols * 1.0) / this->image_width_, (img[i].rows * 1.0) / this->image_height_);
         int imgHeight_k = (int)(img[i].rows / scale);
         int imgWidth_k = (int)(img[i].cols / scale);
