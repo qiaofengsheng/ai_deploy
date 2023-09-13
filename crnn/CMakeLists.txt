@@ -23,8 +23,8 @@ file(GLOB files_
     src/*.cpp
 )
 
-add_library(unet_seg SHARED ${files_})
+add_library(crnn_rec SHARED ${files_})
 add_executable(demo main.cpp ${files_})
 
-target_link_libraries(unet_seg ${LIBS_FILE} -lpthread)
+target_link_libraries(crnn_rec ${LIBS_FILE} -lpthread)
 target_link_libraries(demo ${LIBS_FILE} -lpthread)
