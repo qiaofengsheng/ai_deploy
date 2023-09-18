@@ -3,3 +3,7 @@
 **/*.so
 **/build
 .vscode/
+.DS_Store
+*.jpg
+*.png
+*.jpeg
