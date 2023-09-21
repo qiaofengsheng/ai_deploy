@@ -25,7 +25,7 @@ file(GLOB files_
     src/*.cpp
 )
 
-add_library(yolox_det SHARED ${files_})
+add_library(yolov5_det SHARED ${files_})
 add_executable(demo main.cpp ${files_})
-target_link_libraries(yolox_det ${LIBS_FILE} -lpthread)
+target_link_libraries(yolov5_det ${LIBS_FILE} -lpthread)
 target_link_libraries(demo ${LIBS_FILE} -lpthread)
